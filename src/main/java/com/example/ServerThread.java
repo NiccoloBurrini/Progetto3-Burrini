@@ -36,23 +36,24 @@ public class ServerThread extends Thread {
 
             try {
                 numeroRicevuto = Integer.parseInt(stringaRicevuta);
+                if (numeroRicevuto < 0 || numeroRicevuto > 999) {
+                    outVersoClient.writeBytes("Inserisci un numero valido" + '\n');
+                } else {
+                    if (numeroRicevuto == numeroGenerato) {
+                        outVersoClient.writeBytes("Hai indovinato!" + '\n');
+                        break;
+                    } else if (numeroGenerato > numeroRicevuto) {
+                        outVersoClient.writeBytes("Il numero da indovinare e' piu' grande" + '\n');
+                        System.out.println("6 Echo sul server: " + "num piu grande");
+                    } else {
+                        outVersoClient.writeBytes("Il numero da indovinare e' piu' piccolo" + '\n');
+                        System.out.println("6 Echo sul server: " + "num piu piccolo");
+                    }
+                }
             } catch (Exception e) {
                 outVersoClient.writeBytes("Non hai inserito un numero!" + '\n');
             }
-            if (numeroRicevuto < 0 || numeroRicevuto > 999) {
-                outVersoClient.writeBytes("Inserisci un numero valido" + '\n');
-            }
 
-            if (numeroRicevuto == numeroGenerato) {
-                outVersoClient.writeBytes("Hai indovinato!" + '\n');
-                break;
-            } else if (numeroGenerato > numeroRicevuto) {
-                outVersoClient.writeBytes("Il numero da indovinare e' piu' grande" + '\n');
-                System.out.println("6 Echo sul server: " + "num piu grande");
-            } else {
-                outVersoClient.writeBytes("Il numero da indovinare e' piu' piccolo" + '\n');
-                System.out.println("6 Echo sul server: " + "num piu piccolo");
-            }
         }
         outVersoClient.close();
         inDalClient.close();
